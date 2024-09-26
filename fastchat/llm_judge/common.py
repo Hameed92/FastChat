@@ -13,6 +13,7 @@ from typing import Optional
 
 import openai
 import anthropic
+import google.generativeai as genai
 
 from fastchat.model.model_adapter import (
     get_conversation_template,
@@ -453,6 +454,16 @@ def chat_completion_openai(model, conv, temperature, max_tokens, api_dict=None):
     
         return output
 
+def chat_completion_gemini(model, conv, temperature, max_tokens, api_dict=None):
+    genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+    model = genai.GenerativeModel(model)
+    for _ in range(API_MAX_RETRY):
+        try:
+            messages = conv.to_gemini_api_messages()
+            response = model.generate_content(messages)
+            output = response.text
+        except Exception as e:
+            print('gemini failed...', e)
 
 def chat_completion_openai_azure(model, conv, temperature, max_tokens, api_dict=None):
     openai.api_type = "azure"
