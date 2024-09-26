@@ -109,7 +109,7 @@ def load_model_answers(answer_dir: str):
     for filename in filenames:
         model_name = os.path.basename(filename)[:-6]
         answer = {}
-        with open(filename) as fin:
+        with open(filename, 'r', encoding="utf-8") as fin:
             for line in fin:
                 line = json.loads(line)
                 answer[line["question_id"]] = line
