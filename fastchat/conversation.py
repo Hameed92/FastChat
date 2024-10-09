@@ -446,12 +446,12 @@ class Conversation:
                     for image in images:
                         pil_image = load_image(image.base64_str)
                         content_list.append(pil_image)
-                    ret.append({"role": "user", "content": content_list})
+                    ret.append({"role": "user", "parts": content_list})
                 else:
-                    ret.append({"role": "user", "content": msg})
+                    ret.append({"role": "user", "parts": msg})
             else:
                 if msg is not None:
-                    ret.append({"role": "model", "content": msg})
+                    ret.append({"role": "model", "parts": msg})
         return ret
 
     def to_vertex_api_messages(self):

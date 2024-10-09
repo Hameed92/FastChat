@@ -462,8 +462,10 @@ def chat_completion_gemini(model, conv, temperature, max_tokens, api_dict=None):
             messages = conv.to_gemini_api_messages()
             response = model.generate_content(messages)
             output = response.text
+            break
         except Exception as e:
             print('gemini failed...', e)
+    return output
 
 def chat_completion_openai_azure(model, conv, temperature, max_tokens, api_dict=None):
     openai.api_type = "azure"

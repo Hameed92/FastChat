@@ -180,9 +180,6 @@ if __name__ == "__main__":
         default="data/judge_prompts.jsonl",
         help="The file of judge prompts.",
     )
-    parser.add_argument(
-        "--lang", type=str, required=True, help="Either ar or en"
-    )
     parser.add_argument("--judge-model", type=str, default="gpt-4")
     parser.add_argument("--baseline-model", type=str, default="gpt-3.5-turbo")
     parser.add_argument(
@@ -212,7 +209,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    question_file = f"data/{args.bench_name}/questions_{args.lang}.jsonl"
+    question_file = f"data/{args.bench_name}/question.jsonl"
     answer_dir = f"data/{args.bench_name}/model_answer"
     ref_answer_dir = f"data/{args.bench_name}/reference_answer"
 
@@ -236,10 +233,9 @@ if __name__ == "__main__":
 
     if args.mode == "single":
         judges = make_judge_single(args.judge_model, judge_prompts)
-        print(args.model_list[0])
         play_a_match_func = play_a_match_single
         output_file = (
-            f"data/{args.bench_name}/model_judgment/{args.model_list[0]}.jsonl"
+            f"data/{args.bench_name}/model_judgment/{args.judge_model}_single.jsonl"
         )
         make_match_func = make_match_single
         baseline_model = None
@@ -305,7 +301,7 @@ if __name__ == "__main__":
     # Show match stats and prompt enter to continue
     print("Stats:")
     print(json.dumps(match_stat, indent=4))
-    # input("Press Enter to confirm...")
+    input("Press Enter to confirm...")
 
     # Play matches
     if args.parallel == 1:
